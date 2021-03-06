@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 import {
-  BrowserRouter,
+  HashRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
@@ -33,7 +33,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline/>
-      <BrowserRouter>
+      <Router>
         <Switch>
           <Route path="/send">
             <Sender />
@@ -46,7 +46,7 @@ function App() {
           </Route>
         </Switch>
         <SimpleBottomNavigation />
-      </BrowserRouter>
+      </Router>
     </ThemeProvider>
   );
 }
