@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.8c8b27cf.chunk.css",
-    "main.js": "/static/js/main.4163e5a9.chunk.js",
-    "main.js.map": "/static/js/main.4163e5a9.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.b96991eb.js",
-    "runtime-main.js.map": "/static/js/runtime-main.b96991eb.js.map",
-    "static/js/2.162b3052.chunk.js": "/static/js/2.162b3052.chunk.js",
-    "static/js/2.162b3052.chunk.js.map": "/static/js/2.162b3052.chunk.js.map",
-    "static/js/3.21b9f769.chunk.js": "/static/js/3.21b9f769.chunk.js",
-    "static/js/3.21b9f769.chunk.js.map": "/static/js/3.21b9f769.chunk.js.map",
-    "index.html": "/index.html",
-    "service-worker.js": "/service-worker.js",
-    "service-worker.js.map": "/service-worker.js.map",
-    "static/css/main.8c8b27cf.chunk.css.map": "/static/css/main.8c8b27cf.chunk.css.map",
-    "static/js/2.162b3052.chunk.js.LICENSE.txt": "/static/js/2.162b3052.chunk.js.LICENSE.txt",
-    "static/media/logo.103b5fa1.svg": "/static/media/logo.103b5fa1.svg"
+    "main.css": "/qrtransfer/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/qrtransfer/static/js/main.aff5fa8b.chunk.js",
+    "main.js.map": "/qrtransfer/static/js/main.aff5fa8b.chunk.js.map",
+    "runtime-main.js": "/qrtransfer/static/js/runtime-main.4d7873f8.js",
+    "runtime-main.js.map": "/qrtransfer/static/js/runtime-main.4d7873f8.js.map",
+    "static/js/2.162b3052.chunk.js": "/qrtransfer/static/js/2.162b3052.chunk.js",
+    "static/js/2.162b3052.chunk.js.map": "/qrtransfer/static/js/2.162b3052.chunk.js.map",
+    "static/js/3.21b9f769.chunk.js": "/qrtransfer/static/js/3.21b9f769.chunk.js",
+    "static/js/3.21b9f769.chunk.js.map": "/qrtransfer/static/js/3.21b9f769.chunk.js.map",
+    "index.html": "/qrtransfer/index.html",
+    "service-worker.js": "/qrtransfer/service-worker.js",
+    "service-worker.js.map": "/qrtransfer/service-worker.js.map",
+    "static/css/main.8c8b27cf.chunk.css.map": "/qrtransfer/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.162b3052.chunk.js.LICENSE.txt": "/qrtransfer/static/js/2.162b3052.chunk.js.LICENSE.txt",
+    "static/media/logo.103b5fa1.svg": "/qrtransfer/static/media/logo.103b5fa1.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.b96991eb.js",
+    "static/js/runtime-main.4d7873f8.js",
     "static/js/2.162b3052.chunk.js",
     "static/css/main.8c8b27cf.chunk.css",
-    "static/js/main.4163e5a9.chunk.js"
+    "static/js/main.aff5fa8b.chunk.js"
   ]
 }
