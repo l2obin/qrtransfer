@@ -6,7 +6,7 @@ import QRCode from 'qrcode.react';
 
 const EACH_PACKET_SIZE = 30;
 
-type SenderState  = {
+type SenderState = {
   each_packet_size: number,
   data: string,
 
