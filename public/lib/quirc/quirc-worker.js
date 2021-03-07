@@ -1,3 +1,5 @@
+// https://github.com/mdchaney/quirc.wasm
+
 var image=null;
 var width, height;
 var counted;
