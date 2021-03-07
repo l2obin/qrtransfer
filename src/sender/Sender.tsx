@@ -56,7 +56,7 @@ class Sender extends React.Component<{}, SenderState> {
 
   componentDidMount() {
     this.prepare();
-    setInterval(() => this.tick(), 200);
+    setInterval(() => this.tick(), 100);
   }
 
   render() {
