@@ -29,6 +29,7 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
 
   // In milliseconds
   debounce_timeout = 750;
+  processImageInterval = 50;
 
   async componentDidMount() {
     this.decoder.onmessage = (msg) => { this.onDecoderMessage(msg) };
@@ -45,6 +46,7 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
 
   attemptQRDecode() {
     if (this.isStreamInit)  {
+      setTimeout(() => { this.attemptQRDecode() }, this.processImageInterval);
       try {
         if (this.canvas === null || this.canvas.current === null) return;
         if (this.video === null || this.video.current === null) return;
@@ -62,9 +64,9 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
           this.decoder.postMessage(imgData);
         }
       } catch (err) {
-        if (err.name === 'NS_ERROR_NOT_AVAILABLE') setTimeout(() => { this.attemptQRDecode() }, 0);
-          console.log("Error");
-          console.log(err);
+        //if (err.name === 'NS_ERROR_NOT_AVAILABLE') setTimeout(() => { this.attemptQRDecode() }, this.processImageInterval);
+        console.log("Error");
+        console.log(err);
       }
     }
   }
@@ -78,7 +80,7 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
       if (qrid !== this.last_scanned_raw || this.last_scanned_at < right_now - this.debounce_timeout) {
         this.last_scanned_raw = qrid;
         this.last_scanned_at = right_now;
-        
+
         if (this.props.messageChange) {
           this.props.messageChange(qrid);
         }
@@ -87,7 +89,6 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
         this.last_scanned_at = right_now;
       }
     }
-    setTimeout(() => { this.attemptQRDecode() }, 0);
   }
 
   handleSuccess(stream: any) {
