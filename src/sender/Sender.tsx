@@ -32,6 +32,7 @@ class Sender extends React.Component<SenderProps, SenderState> {
     setInterval(() => this.tick(), 100);
 
     this.send = this.send.bind(this);
+    this.stop = this.stop.bind(this);
   }
 
   send() {
@@ -45,6 +46,15 @@ class Sender extends React.Component<SenderProps, SenderState> {
       totalNumberOfPackets: totalNumberOfPackets,
       currentPacketData: this.getCurrentPacket(data, this.state.eachPacketSize, 0, totalNumberOfPackets),
     });
+  }
+
+  stop() {
+    this.setState({
+      data: undefined,
+      currentPacketNumber: 0,
+      totalNumberOfPackets: 0,
+      currentPacketData: undefined
+    })
   }
 
   tick() {
@@ -84,7 +94,10 @@ class Sender extends React.Component<SenderProps, SenderState> {
           style={{width: "74vmin"}}
         />
       </Box>: null}
-      <Button variant="contained" color="primary" onClick={this.send}>Send</Button>
+      { this.state.data ?
+      <Button variant="contained" color="secondary" onClick={this.stop}>Stop</Button>:
+      <Button variant="contained" color="primary" onClick={this.send}>Send</Button>}
+      
       
     </Container>;
   }
