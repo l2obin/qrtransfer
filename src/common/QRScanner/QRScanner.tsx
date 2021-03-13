@@ -1,15 +1,24 @@
 import { Component, createRef } from "react"
 import './QRScanner.css';
 
-type QRScannerProps = {
-  messageChange?: Function
+type QRScannerProps = typeof QRScanner.defaultProps & {
+  debounceTimeoutInMs: number,
+  processImageIntervalInMs: number,
+  messageChange?: Function,
 }
 
 type QRScannerState = {
-  decoded_string: ''
+  debounceTimeoutInMs: number,
+  processImageIntervalInMs: number,
+  decoded_string: '',
 }
 
 class QRScanner extends Component<QRScannerProps, QRScannerState> {
+
+  static defaultProps = { 
+    debounceTimeoutInMs: 750,
+    processImageIntervalInMs: 16,
+  };
 
   video = createRef<HTMLVideoElement>();
   canvas = createRef<HTMLCanvasElement>();
@@ -22,31 +31,51 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
     }
   };
 
-  // quirc wasm
-  decoder = new Worker('./lib/quirc/quirc-worker.js');
-  last_scanned_raw = new Date().getTime();
-  last_scanned_at = new Date().getTime();
-
   // In milliseconds
-  debounce_timeout = 750;
-  processImageInterval = 50;
+  debounceTimeoutInMs: number;
+  processImageIntervalInMs: number;
+
+  decoder: Worker;
+  lastScannedEpochInMs: number;
+  lastScannedAtEpochInMs: number;
+
+  processQRCode: Boolean;
+
+  constructor(props: QRScannerProps) {
+    super(props);
+    
+    this.debounceTimeoutInMs = props.debounceTimeoutInMs; 
+    this.processImageIntervalInMs = props.processImageIntervalInMs;
+    
+    // quirc wasm
+    this.decoder = new Worker('./lib/quirc/quirc-worker.js');
+    this.lastScannedEpochInMs = new Date().getTime();
+    this.lastScannedAtEpochInMs = new Date().getTime();
+
+    this.processQRCode = true;
+    setTimeout(() => this.attemptQRDecode(), this.debounceTimeoutInMs);
+    this.decoder.onmessage = (msg) => { this.onDecoderMessage(msg) };
+  }
 
   async componentDidMount() {
-    this.decoder.onmessage = (msg) => { this.onDecoderMessage(msg) };
-
     try {
       let stream = await navigator.mediaDevices.getUserMedia(this.constraints);
       this.handleSuccess(stream);
     } catch (err) {
       this.handleError(err);
     }
+  }
 
-    setTimeout(() => { this.attemptQRDecode() }, this.debounce_timeout);
+  componentWillUnmount() {
+    if (this.decoder) {
+      this.processQRCode = false;
+      this.decoder.terminate();
+    }
   }
 
   attemptQRDecode() {
     if (this.isStreamInit)  {
-      setTimeout(() => { this.attemptQRDecode() }, this.processImageInterval);
+      setTimeout(() => { this.attemptQRDecode() }, this.processImageIntervalInMs);
       try {
         if (this.canvas === null || this.canvas.current === null) return;
         if (this.video === null || this.video.current === null) return;
@@ -64,7 +93,7 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
           this.decoder.postMessage(imgData);
         }
       } catch (err) {
-        //if (err.name === 'NS_ERROR_NOT_AVAILABLE') setTimeout(() => { this.attemptQRDecode() }, this.processImageInterval);
+        //if (err.name === 'NS_ERROR_NOT_AVAILABLE') setTimeout(() => { this.attemptQRDecode() }, this.processImageIntervalInMs);
         console.log("Error");
         console.log(err);
       }
@@ -77,16 +106,16 @@ class QRScanner extends Component<QRScannerProps, QRScannerState> {
       const qrid = msg.data['payload_string'];
       const right_now = Date.now();
   
-      if (qrid !== this.last_scanned_raw || this.last_scanned_at < right_now - this.debounce_timeout) {
-        this.last_scanned_raw = qrid;
-        this.last_scanned_at = right_now;
+      if (qrid !== this.lastScannedEpochInMs || this.lastScannedAtEpochInMs < right_now - this.debounceTimeoutInMs) {
+        this.lastScannedEpochInMs = qrid;
+        this.lastScannedAtEpochInMs = right_now;
 
         if (this.props.messageChange) {
           this.props.messageChange(qrid);
         }
         this.setState({ decoded_string: qrid });
-      } else if (qrid === this.last_scanned_raw) {
-        this.last_scanned_at = right_now;
+      } else if (qrid === this.lastScannedEpochInMs) {
+        this.lastScannedAtEpochInMs = right_now;
       }
     }
   }
