@@ -66,7 +66,7 @@ class Sender extends React.Component<SenderProps, SenderState> {
       <h3>Send</h3>
       
       { this.state ? <Box>
-        <Box alignItems="center" style={{backgroundColor: '#444', padding: 10, width: "60vmin", height: "60vmin"}}>
+        <Box alignItems="center" style={{backgroundColor: 'white', padding: 10, width: "60vmin", height: "60vmin"}}>
           { this.state.currentPacketData != null ? <QRCode value={this.state.currentPacketData} renderAs='svg' style={{width: "55vmin", height: "55vmin"}} /> : null }
         </Box>
         <Typography id="send-progress" gutterBottom>
